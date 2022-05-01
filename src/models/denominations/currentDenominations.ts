@@ -2,14 +2,14 @@ import { CurrencyCoin } from "./currencyCoin";
 import { CurrencyNote } from "./currencyNote";
 
 
-export const thousandNote = new CurrencyNote(1000, 'thousandNote');
-export const fiveHundredNote = new CurrencyNote(500, 'fiveHundredNote');
-export const twoHundredNote = new CurrencyNote(200, 'twoHundredNote');
-export const oneHundredNote = new CurrencyNote(100, 'oneHundredNote');
-export const fiftyNote = new CurrencyNote(50, 'fiftyNote');
-export const twentyCoin = new CurrencyCoin(20, 40, 'twentyCoin');
-export const tenCoin = new CurrencyCoin(10, 20, 'tenCoin');
-export const fiveCoin = new CurrencyCoin(5, 50, 'fiveCoin');
-export const twoCoin = new CurrencyCoin(2, 50, 'twoCoin');
-export const oneCoin = new CurrencyCoin(1, 10, 'oneCoin');
+export const n1000 = new CurrencyNote(1000, '1000');
+export const n500 = new CurrencyNote(500, '500');
+export const n200 = new CurrencyNote(200, '200');
+export const n100 = new CurrencyNote(100, '100');
+export const n50 = new CurrencyNote(50, '50');
+export const c20 = new CurrencyCoin(20, 40, '20');
+export const c10 = new CurrencyCoin(10, 20, '10');
+export const c5 = new CurrencyCoin(5, 50, '5');
+export const c2 = new CurrencyCoin(2, 50, '2');
+export const c1 = new CurrencyCoin(1, 10, '1');
 
