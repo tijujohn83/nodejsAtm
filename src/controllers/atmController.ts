@@ -18,6 +18,10 @@ atmController.post("/withdraw", (req, res) => {
   }
 });
 
-atmController.get("/balance", (req, res) => {
+atmController.get("/balances", (req, res) => {
   res.json(atmManager.getInstance().getBalances());
+});
+
+atmController.get("/balanceAmount", (req, res) => {
+  res.json(atmManager.getInstance().getBalanceValue());
 });
