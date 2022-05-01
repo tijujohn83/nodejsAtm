@@ -9,7 +9,7 @@ const atmManager = new AtmService();
 atmController.post("/withdraw", (req, res) => {
   var amountJson: RequestBody = JSON.parse(req.body);
   if (amountJson?.amount !== undefined) {
-    res.json(atmManager.withDraw(amountJson.amount));
+    res.json(atmManager.getInstance().withDraw(amountJson.amount));
   }
   else {
     res.statusMessage = "Bad Request. Please specify the amount.";
@@ -18,5 +18,5 @@ atmController.post("/withdraw", (req, res) => {
 });
 
 atmController.get("/balance", (req, res) => {
-  res.json(atmManager.getBalances());
+  res.json(atmManager.getInstance().getBalances());
 });
