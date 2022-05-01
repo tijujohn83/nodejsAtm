@@ -6,8 +6,8 @@ export class CurrencyCoin extends Denomination {
         return this._diameter;
     }
 
-    constructor(value: number, diameter: number, name: string) {
-        super(value, name);
+    constructor(value: number, diameter: number, id: string) {
+        super(value, id);
         this._diameter = diameter;
     }  
 }

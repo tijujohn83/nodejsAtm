@@ -1,9 +1,9 @@
 import { WithdrawStatus } from "./models/enums";
-import { WithdrawItem } from "./models/withdrawn";
+import { WithdrawItems } from "./models/withdrawn";
 
 export interface AtmRequirement {
     refill(): void;
-    getBalances(): WithdrawItem[];
+    getBalances(): WithdrawItems;
     getBalanceValue(): number;
-    withDraw(amount: number): { status: WithdrawStatus, dispensed?: WithdrawItem[] }
+    withDraw(amount: number): { status: WithdrawStatus, dispensed?: WithdrawItems }
 }

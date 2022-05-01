@@ -3,7 +3,7 @@ import { DenominationType } from "../enums";
 export interface IDenomination {
     get value(): number;
     get type(): DenominationType
-    get friendlyName(): string
+    get id(): string
 }
 
 export abstract class Denomination implements IDenomination {
@@ -18,15 +18,15 @@ export abstract class Denomination implements IDenomination {
         return this._denominationType;
     }
 
-    private _friendlyName: string;
-    public get friendlyName(): string {
-        return this._friendlyName;
+    private _id: string;
+    public get id(): string {
+        return this._id;
     }
 
-    constructor(value: number, name: string) {
+    constructor(value: number, id: string) {
         this._denominationType = DenominationType.Note;
         this._value = value;
-        this._friendlyName = name;
+        this._id = id;
     }
 
 }

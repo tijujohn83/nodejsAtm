@@ -1,11 +1,11 @@
 import { ItemCapacity } from "../models/itemCapacity";
-import { WithdrawItem } from "../models/withdrawn";
+import { WithdrawItems } from "../models/withdrawn";
 import { WithdrawStrategy } from "./withdrawStrategy";
 
 export class SimpleWithdrawStrategy implements WithdrawStrategy {
 
-    getOptimumCombination(amount: number, totalCapacity: ItemCapacity[]): WithdrawItem[] {
-        var withDrawn: WithdrawItem[] = [];
+    getOptimumCombination(amount: number, totalCapacity: ItemCapacity[]): WithdrawItems {
+        var withDrawn: WithdrawItems = {};
         var remainingAmount = amount;
 
         var orderedItemsDesc = totalCapacity
@@ -25,18 +25,14 @@ export class SimpleWithdrawStrategy implements WithdrawStrategy {
                     possible = required;
                 }
                 if (possible > 0) {
-                    withDrawn.push(new WithdrawItem(current.Denomination.friendlyName, possible));
+                    withDrawn[current.Denomination.id] = possible;
                     remainingAmount -= possible * current.Denomination.value;
                 }
             }
             iterator++;
         }
-        if (remainingAmount === 0) {
-            return withDrawn;
-        }
-        else {
-            return [];
-        }
+        return withDrawn;
+
     }
 
 }

@@ -3,7 +3,7 @@ import { Denomination } from "./denomination";
 
 export class CurrencyNote extends Denomination {
      
-    constructor(value: number, name: string) {
-       super(value, name);
+    constructor(value: number, id: string) {
+       super(value, id);
     }
 }

@@ -1,4 +1,5 @@
 import { AtmRequirement } from "../atmRequirements";
+import { FileLogger } from "../Logger/FileLogger";
 import { Atm } from "../models/atm";
 import { SimpleWithdrawStrategy } from "../strategy/simpleWithdrawStrategy";
 
@@ -7,7 +8,7 @@ export class AtmService  {
 
     constructor() {
         if (AtmService.Instance === undefined) {
-            AtmService.Instance = new Atm(new SimpleWithdrawStrategy());
+            AtmService.Instance = new Atm(new SimpleWithdrawStrategy(), new FileLogger());
             AtmService.Instance.refill();
         }
     }

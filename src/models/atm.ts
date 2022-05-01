@@ -1,48 +1,52 @@
 import { AtmRequirement } from "../atmRequirements";
+import { ILogger } from "../Logger/ilogger";
 import { WithdrawStrategy } from "../strategy/withdrawStrategy";
 import { n50, c5, n500, c1, n100, c10, n1000, c20, c2, n200 } from "./denominations/currentDenominations";
 import { WithdrawStatus } from "./enums";
 import { ItemCapacity } from "./itemCapacity";
-import { WithdrawItem } from "./withdrawn";
-import * as fs from 'fs';
+import { WithdrawItems } from "./withdrawn";
+
 
 export class Atm implements AtmRequirement {
     private _items: { [key: string]: ItemCapacity } = {};
-    private _strategy: WithdrawStrategy;
-    private _logFile = "atmLog.log"
+    private _strategy: WithdrawStrategy;   
+    private _logger: ILogger; 
 
-    constructor(strategy: WithdrawStrategy) {
-        this._items[n1000.friendlyName] = new ItemCapacity(n1000, 1000);
-        this._items[n500.friendlyName] = new ItemCapacity(n500, 1000);
-        this._items[n200.friendlyName] = new ItemCapacity(n200, 1000);
-        this._items[n100.friendlyName] = new ItemCapacity(n100, 1000);
-        this._items[n50.friendlyName] = new ItemCapacity(n50, 1000);
-        this._items[c20.friendlyName] = new ItemCapacity(c20, 1000);
-        this._items[c10.friendlyName] = new ItemCapacity(c10, 1000);
-        this._items[c5.friendlyName] = new ItemCapacity(c5, 1000);
-        this._items[c2.friendlyName] = new ItemCapacity(c2, 1000);
-        this._items[c1.friendlyName] = new ItemCapacity(c1, 1000);
-        this._strategy = strategy;
-        fs.openSync(this._logFile, 'w');
+    constructor(strategy: WithdrawStrategy, logger: ILogger) {
+        this._items[n1000.id] = new ItemCapacity(n1000, 1000);
+        this._items[n500.id] = new ItemCapacity(n500, 1000);
+        this._items[n200.id] = new ItemCapacity(n200, 1000);
+        this._items[n100.id] = new ItemCapacity(n100, 1000);
+        this._items[n50.id] = new ItemCapacity(n50, 1000);
+        this._items[c20.id] = new ItemCapacity(c20, 1000);
+        this._items[c10.id] = new ItemCapacity(c10, 1000);
+        this._items[c5.id] = new ItemCapacity(c5, 1000);
+        this._items[c2.id] = new ItemCapacity(c2, 1000);
+        this._items[c1.id] = new ItemCapacity(c1, 1000);
+
+        this._logger = logger;
+        this._strategy = strategy;            
     }
 
     public refill(): void {
-        Object.keys(this._items).forEach(item => {
-            this._items[item].BalanceItemCount = this._items[item].MaxCapacity;
+        Object.values(this._items).forEach(val => {
+            val.BalanceItemCount = val.MaxCapacity;
         });
 
-        var logContent = "refilled with amount:" + this.getBalanceValue() + "; " + 
-        JSON.stringify(Object.values(this._items)
-        .sort((a, b) => b.Denomination.value - a.Denomination.value)
-        .map(i => i.Denomination.friendlyName + "[" + i.BalanceItemCount + "]")) + "\n";
+        var logContent = "refilled with amount:" + this.getBalanceValue() + "; " +
+            JSON.stringify(Object.values(this._items)
+                .sort((a, b) => b.Denomination.value - a.Denomination.value)
+                .map(i => i.Denomination.id + "[" + i.BalanceItemCount + "]"));
 
-        fs.appendFileSync(this._logFile, logContent);
+        this._logger.logLine(logContent);
     }
 
-    public getBalances(): WithdrawItem[] {
-        return Object.values(this._items)
-            .sort((a, b) => b.Denomination.value - a.Denomination.value)
-            .map(i => new WithdrawItem(i.Denomination.friendlyName, i.BalanceItemCount));
+    public getBalances(): WithdrawItems {
+        var returnVal: WithdrawItems = {};
+        Object.values(this._items).forEach(i => {
+            returnVal[i.Denomination.id] = i.BalanceItemCount;
+        });
+        return returnVal;
     }
 
     public getBalanceValue(): number {
@@ -51,21 +55,21 @@ export class Atm implements AtmRequirement {
             .reduce((prev, curr) => prev + curr, 0);
     }
 
-    public withDraw(amount: number): { status: WithdrawStatus, dispensed?: WithdrawItem[] } {
+    public withDraw(amount: number): { status: WithdrawStatus, dispensed?: WithdrawItems } {
         if (this.getBalanceValue() >= amount) {
             var withdraw = this._strategy.getOptimumCombination(amount, Object.values(this._items));
-            if (withdraw.length > 0) {
-                withdraw.forEach(item => {
-                    this._items[item.friendlyName].BalanceItemCount -= item.count;
+            if (Object.keys(withdraw).length > 0) {
+                Object.keys(withdraw).forEach(id => {
+                    this._items[id].BalanceItemCount -= withdraw[id];
                 });
                 var successObj = { status: WithdrawStatus.Success, dispensed: withdraw };
-                var logContent = "amount:" + amount + "; balance:" + this.getBalanceValue() + "; " + JSON.stringify(successObj) + "\n"
-                fs.appendFileSync(this._logFile, logContent);
+                var logContent = "amount:" + amount + "; balance:" + this.getBalanceValue() + "; " + JSON.stringify(successObj)
+                this._logger.logLine(logContent);
                 return successObj;
             }
         }
         var logContent = "amount:" + amount + "; balance:" + this.getBalanceValue() + "; Failed\n";
-        fs.appendFileSync(this._logFile, logContent);
+        this._logger.logLine(logContent);
         return { status: WithdrawStatus.Failure };
     }
 
