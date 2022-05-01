@@ -1,5 +1,5 @@
 import { AtmRequirement } from "../atmRequirements";
-import { ILogger } from "../Logger/ilogger";
+import { ILogger } from "../logger/ilogger";
 import { WithdrawStrategy } from "../strategy/withdrawStrategy";
 import { n50, c5, n500, c1, n100, c10, n1000, c20, c2, n200 } from "./denominations/currentDenominations";
 import { WithdrawStatus } from "./enums";

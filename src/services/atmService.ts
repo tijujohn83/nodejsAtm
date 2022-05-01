@@ -1,5 +1,5 @@
 import { AtmRequirement } from "../atmRequirements";
-import { FileLogger } from "../Logger/FileLogger";
+import { FileLogger } from "../logger/fileLogger";
 import { Atm } from "../models/atm";
 import { SimpleWithdrawStrategy } from "../strategy/simpleWithdrawStrategy";
 

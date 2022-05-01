@@ -1,4 +1,4 @@
-import { ILogger } from "./ilogger";
+import { ILogger } from "./logger";
 import * as fs from 'fs';
 
 export class FileLogger implements ILogger {
