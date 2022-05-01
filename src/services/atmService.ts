@@ -1,3 +1,4 @@
+import { AtmRequirement } from "../atmRequirements";
 import { Atm } from "../models/atm";
 import { SimpleWithdrawStrategy } from "../strategy/simpleWithdrawStrategy";
 
@@ -11,7 +12,7 @@ export class AtmService  {
         }
     }
 
-    getInstance(): Atm {
+    getInstance(): AtmRequirement {
         return AtmService.Instance;
     } 
 

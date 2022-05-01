@@ -1,4 +1,4 @@
 export class WithdrawItem {
-    constructor(public name: string, public count: number) {
+    constructor(public friendlyName: string, public count: number) {
     }
 }
