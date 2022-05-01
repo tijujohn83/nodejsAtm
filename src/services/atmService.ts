@@ -1,5 +1,5 @@
 import { Atm } from "../models/atm";
-import { SimpleWithdrawStrategy } from "../strategy/SimpleWithdrawStrategy";
+import { SimpleWithdrawStrategy } from "../strategy/simpleWithdrawStrategy";
 
 export class AtmService  {
     private static Instance: Atm;

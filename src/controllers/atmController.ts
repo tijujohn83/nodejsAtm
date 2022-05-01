@@ -1,6 +1,6 @@
 import * as express from 'express';
-import { RequestBody } from '../models/request-body';
-import { AtmService } from '../services/atm-service';
+import { RequestBody } from '../models/requestBody';
+import { AtmService } from '../services/atmService';
 
 export const atmController = express.Router();
 

@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { configOptions } from './config/config';
-import { atmController } from './controllers/atm-controller';
+import { atmController } from './controllers/atmController';
 
 async function main() {
   const app = express.default();
