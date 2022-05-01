@@ -1,4 +1,4 @@
-import { Denomination } from "./iDenomination";
+import { Denomination } from "./denomination";
 
 
 export class CurrencyNote extends Denomination {

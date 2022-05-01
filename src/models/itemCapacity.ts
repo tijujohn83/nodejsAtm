@@ -1,4 +1,4 @@
-import { IDenomination } from "./denominations/iDenomination";
+import { IDenomination } from "./denominations/denomination";
 
 export class ItemCapacity {
     private _denomination: IDenomination;

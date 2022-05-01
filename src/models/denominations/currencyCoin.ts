@@ -1,8 +1,8 @@
-import { Denomination } from "./iDenomination";
+import { Denomination } from "./denomination";
 
 export class CurrencyCoin extends Denomination {  
     private _diameter: number;
-    public get Diameter():  number {
+    public get diameter():  number {
         return this._diameter;
     }
 

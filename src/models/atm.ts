@@ -2,6 +2,7 @@ import { WithdrawStrategy } from "../strategy/withdrawStrategy";
 import { fiftyNote, fiveCoin, fiveHundredNote, oneCoin, oneHundredNote, tenCoin, thousandNote, twentyCoin, twoCoin, twoHundredNote } from "./denominations/currentDenominations";
 import { WithdrawStatus } from "./enums";
 import { ItemCapacity } from "./itemCapacity";
+import { WithdrawItem } from "./withdrawn";
 
 export class Atm {
     private _items: ItemCapacity[];
@@ -30,26 +31,26 @@ export class Atm {
         });
     }
 
-    public getBalances(): { name: string, balance: number }[] {
+    public getBalances(): WithdrawItem[] {
         return this._items
-            .map(i => <{ name: string, balance: number }>{ name: i.Denomination.FriendlyName, balance: i.Balance })
-            .sort((a, b) => a.balance - b.balance);
+            .map(i => new WithdrawItem(i.Denomination.friendlyName, i.Balance))
+            .sort((a, b) => a.count - b.count);
     }
 
     public getBalanceValue(): number {
         return this._items
-            .map(i => i.Denomination.Value * i.Balance)
+            .map(i => i.Denomination.value * i.Balance)
             .reduce((prev, curr) => prev + curr, 0);
     }
 
-    public withDraw(amount: number): { status: WithdrawStatus, dispensed?: { name: string, count: number }[] } {
+    public withDraw(amount: number): { status: WithdrawStatus, dispensed?: WithdrawItem[] } {
         if (this.getBalanceValue() >= amount) {
-            this._strategy.
+            var withDrawn = this._strategy.getOptimumCombination(this._items);
+            if (withDrawn.length > 0) {
+                return { status: WithdrawStatus.Success, dispensed: withDrawn };
+            }
         }
-        else {
-            return { status: WithdrawStatus.Failure };
-        }
-        return null;
+        return { status: WithdrawStatus.Failure };
     }
 
 }
