@@ -1,35 +1,16 @@
 import * as express from 'express';
+import { configOptions } from './config/config';
+import { atmController } from './controllers/atm-controller';
 
 async function main() {
   const app = express.default();
 
-  var config = {
-    port:3000
-  }
+  app.use('/atm/api/', atmController);            
 
-  app.listen(config.port, () => {
-    console.log(`Server is listening on port ${config.port}`);
+
+  app.listen(configOptions.port, () => {
+    console.log(`Server is listening on port ${configOptions.port}`);
   });
-
-  app.get("/balance", (req, res) => {
-    const balance = [
-      {
-        id: 1,
-        name: "hammer",
-      },
-      {
-        id: 2,
-        name: "screwdriver",
-      },
-      ,
-      {
-        id: 3,
-        name: "wrench",
-      },
-    ];
- 
-   res.json(balance);
- });
 
   // graceful shutdown
   process.on('SIGTERM', () => {
