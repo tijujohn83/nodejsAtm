@@ -11,17 +11,17 @@ export class ItemCapacity {
         return this._maxCapacity;
     }
 
-    private _balance: number;
-    public get Balance(): number {
-        return this._balance;
+    private _balanceItemCount: number;
+    public get BalanceItemCount(): number {
+        return this._balanceItemCount;
     }
-    public set Balance(value: number) {
-        this._balance = value;
+    public set BalanceItemCount(value: number) {
+        this._balanceItemCount = value;
     }
 
     constructor(denomination: IDenomination, maxCapacity: number) {
         this._denomination = denomination;
         this._maxCapacity = maxCapacity;
-        this._balance = 0;
+        this._balanceItemCount = 0;
     }
 }

@@ -1,10 +1,11 @@
+import { AtmRequirement } from "../atm-requirements";
 import { WithdrawStrategy } from "../strategy/withdrawStrategy";
 import { fiftyNote, fiveCoin, fiveHundredNote, oneCoin, oneHundredNote, tenCoin, thousandNote, twentyCoin, twoCoin, twoHundredNote } from "./denominations/currentDenominations";
 import { WithdrawStatus } from "./enums";
 import { ItemCapacity } from "./itemCapacity";
 import { WithdrawItem } from "./withdrawn";
 
-export class Atm {
+export class Atm implements AtmRequirement {
     private _items: ItemCapacity[];
     private _strategy: WithdrawStrategy;
 
@@ -27,25 +28,25 @@ export class Atm {
 
     public refill(): void {
         this._items.forEach(item => {
-            item.Balance = item.MaxCapacity;
+            item.BalanceItemCount = item.MaxCapacity;
         });
     }
 
     public getBalances(): WithdrawItem[] {
         return this._items
-            .map(i => new WithdrawItem(i.Denomination.friendlyName, i.Balance))
+            .map(i => new WithdrawItem(i.Denomination.friendlyName, i.BalanceItemCount))
             .sort((a, b) => a.count - b.count);
     }
 
     public getBalanceValue(): number {
         return this._items
-            .map(i => i.Denomination.value * i.Balance)
+            .map(i => i.Denomination.value * i.BalanceItemCount)
             .reduce((prev, curr) => prev + curr, 0);
     }
 
     public withDraw(amount: number): { status: WithdrawStatus, dispensed?: WithdrawItem[] } {
         if (this.getBalanceValue() >= amount) {
-            var withDrawn = this._strategy.getOptimumCombination(this._items);
+            var withDrawn = this._strategy.getOptimumCombination(amount, this._items);
             if (withDrawn.length > 0) {
                 return { status: WithdrawStatus.Success, dispensed: withDrawn };
             }
