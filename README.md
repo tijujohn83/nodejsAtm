@@ -1,0 +1,2 @@
+- Run `node start`
+- The server address will be displayed to you as `http://0.0.0.0:3000`
