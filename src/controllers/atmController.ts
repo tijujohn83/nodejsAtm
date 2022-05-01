@@ -7,7 +7,8 @@ export const atmController = express.Router();
 const atmManager = new AtmService();
 
 atmController.post("/withdraw", (req, res) => {
-  var amountJson: RequestBody = JSON.parse(req.body);
+  console.dir(req);
+  var amountJson: RequestBody = req.body;
   if (amountJson?.amount !== undefined && amountJson.amount % 1 === 0) {
     res.json(atmManager.getInstance().withDraw(amountJson.amount));
   }

@@ -31,8 +31,8 @@ export class Atm implements AtmRequirement {
 
     public getBalances(): WithdrawItem[] {
         return Object.values(this._items)
-            .map(i => new WithdrawItem(i.Denomination.friendlyName, i.BalanceItemCount))
-            .sort((a, b) => a.count - b.count);
+            .sort((a, b) => b.Denomination.value - a.Denomination.value)
+            .map(i => new WithdrawItem(i.Denomination.friendlyName, i.BalanceItemCount));
     }
 
     public getBalanceValue(): number {

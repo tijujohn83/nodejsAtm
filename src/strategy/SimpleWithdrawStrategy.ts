@@ -10,12 +10,12 @@ export class SimpleWithdrawStrategy implements WithdrawStrategy {
 
         var orderedItemsDesc = totalCapacity
             .filter(i => i.BalanceItemCount > 0)
-            .sort((a, b) => a.Denomination.value - b.Denomination.value);
+            .sort((a, b) => b.Denomination.value - a.Denomination.value);
 
         var iterator = 0;
         while (iterator <= orderedItemsDesc.length - 1 && remainingAmount > 0) {
             var current = orderedItemsDesc[iterator];
-            var required = Math.floor(amount / current.Denomination.value);
+            var required = Math.floor(remainingAmount / current.Denomination.value);
             if (required > 0) {
                 var possible = 0;
                 if (current.BalanceItemCount < required) {

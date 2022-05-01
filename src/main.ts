@@ -5,6 +5,7 @@ import { atmController } from './controllers/atmController';
 async function main() {
   const app = express.default();
 
+  app.use(express.json());
   app.use('/atm/api/', atmController);            
 
 
