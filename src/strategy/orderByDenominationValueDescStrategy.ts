@@ -2,7 +2,7 @@ import { ItemCapacity } from "../models/itemCapacity";
 import { WithdrawItems } from "../models/withdrawn";
 import { WithdrawStrategy } from "./withdrawStrategy";
 
-export class SimpleWithdrawStrategy implements WithdrawStrategy {
+export class OrderByDenominationValueDescStrategy implements WithdrawStrategy {
 
     getOptimumCombination(amount: number, totalCapacity: ItemCapacity[]): WithdrawItems {
         var withDrawn: WithdrawItems = {};
