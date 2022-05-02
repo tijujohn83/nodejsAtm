@@ -1,3 +1,3 @@
 - Run `npm run start`
-- Test 'npm run test'
+- Test `npm run test`
 - The server address will be displayed to you as `http://0.0.0.0:3000`
