@@ -1,4 +1,3 @@
-import { ConsoleLogger } from "../logger/consoleLogger";
 import { NullLogger } from "../logger/nullLogger";
 import { Atm } from "../models/atm";
 import { WithdrawStatus } from "../models/enums";
@@ -155,6 +154,5 @@ describe('atmTest', () => {
             }
         }).not.toThrow();
     });
-
 
 });
