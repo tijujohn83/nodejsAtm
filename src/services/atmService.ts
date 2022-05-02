@@ -1,16 +1,17 @@
 import { AtmRequirement } from "../atmRequirements";
 import { FileLogger } from "../logger/fileLogger";
 import { Atm } from "../models/atm";
-import { OrderByDenominationValueDescStrategy } from "../strategy/orderByDenominationValueDescStrategy";
-import { orderByTotalValueDescStrategy } from "../strategy/orderByTotalValueDescStrategy";
+import { MaxRefill } from "../strategy/maxRefill";
+import { OrderByDenominationValueDesc } from "../strategy/orderByDenominationValueDesc";
+import { orderByTotalValueDesc } from "../strategy/orderByTotalValueDesc";
 
 export class AtmService  {
     private static Instance: Atm;
 
     constructor() {
         if (AtmService.Instance === undefined) {
-            //AtmService.Instance = new Atm(new OrderByDenominationValueDescStrategy(), new FileLogger());
-            AtmService.Instance = new Atm(new orderByTotalValueDescStrategy(), new FileLogger());
+            //AtmService.Instance = new Atm(new OrderByDenominationValueDesc(), new MaxRefill(), new FileLogger());
+            AtmService.Instance = new Atm(new orderByTotalValueDesc(), new MaxRefill(), new FileLogger());
             AtmService.Instance.refill();
         }
     }

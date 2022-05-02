@@ -19,9 +19,13 @@ export class ItemCapacity {
         this._balanceItemCount = value;
     }
 
-    constructor(denomination: IDenomination, maxCapacity: number) {
+    constructor(denomination: IDenomination, maxCapacity: number, fill: number) {
         this._denomination = denomination;
         this._maxCapacity = maxCapacity;
-        this._balanceItemCount = 0;
+
+        if(fill > maxCapacity) {
+            throw Error("cannot refill more than capcity");
+        }
+        this._balanceItemCount = fill;
     }
 }

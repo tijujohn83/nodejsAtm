@@ -1,31 +1,37 @@
 import { AtmRequirement } from "../atmRequirements";
-import { ILogger } from "../logger/ilogger";
+import { ILogger } from "../logger/logger";
+import { RefillStrategy } from "../strategy/refillStrategy";
 import { WithdrawStrategy } from "../strategy/withdrawStrategy";
-import { n50, c5, n500, c1, n100, c10, n1000, c20, c2, n200 } from "./denominations/currentDenominations";
 import { WithdrawStatus } from "./enums";
 import { ItemCapacity } from "./itemCapacity";
 import { WithdrawItems } from "./withdrawn";
-
+import { n1000, n500, n200, n100, n50, c20, c10, c5, c2, c1 } from "../models/denominations/currentDenominations";
 
 export class Atm implements AtmRequirement {
     private _items: { [key: string]: ItemCapacity } = {};
     private _strategy: WithdrawStrategy;   
     private _logger: ILogger; 
+    private _refillStrategy: RefillStrategy;
+    private _atmMaxCapacities:{ [key: string]: number } = {};
+     
 
-    constructor(strategy: WithdrawStrategy, logger: ILogger) {
-        this._items[n1000.id] = new ItemCapacity(n1000, 10);
-        this._items[n500.id] = new ItemCapacity(n500, 9999999);
-        this._items[n200.id] = new ItemCapacity(n200, 10000);
-        this._items[n100.id] = new ItemCapacity(n100, 1000);
-        this._items[n50.id] = new ItemCapacity(n50, 1000);
-        this._items[c20.id] = new ItemCapacity(c20, 1000);
-        this._items[c10.id] = new ItemCapacity(c10, 1000);
-        this._items[c5.id] = new ItemCapacity(c5, 1000);
-        this._items[c2.id] = new ItemCapacity(c2, 1000);
-        this._items[c1.id] = new ItemCapacity(c1, 1000);
-
+    constructor(strategy: WithdrawStrategy, refillStrategy: RefillStrategy, logger: ILogger) {
         this._logger = logger;
-        this._strategy = strategy;            
+        this._strategy = strategy; 
+        this._refillStrategy = refillStrategy; 
+
+        this._atmMaxCapacities[n1000.id] = 10000;
+        this._atmMaxCapacities[n500.id] = 10000;
+        this._atmMaxCapacities[n200.id] = 10000;
+        this._atmMaxCapacities[n100.id] = 10000;
+        this._atmMaxCapacities[n50.id] = 10000;
+        this._atmMaxCapacities[c20.id] = 10000;
+        this._atmMaxCapacities[c10.id] = 10000;
+        this._atmMaxCapacities[c5.id] = 10000;
+        this._atmMaxCapacities[c2.id] = 10000;
+        this._atmMaxCapacities[c1.id] = 10000;
+
+        this._refillStrategy.Refill(this._items, this._atmMaxCapacities);          
     }
 
     public refill(): void {
