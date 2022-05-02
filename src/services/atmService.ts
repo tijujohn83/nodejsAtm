@@ -12,9 +12,9 @@ export class AtmService  {
 
     constructor() {
         if (AtmService.Instance === undefined) {
-            AtmService.Instance = new Atm(new OrderByDenominationValueDesc(), new MaxRefill(), new FileLogger());
-            AtmService.Instance = new Atm(new orderByTotalValueDesc(), new MaxRefill(), new FileLogger());
-            AtmService.Instance = new Atm(new orderByTotalValueDesc(), new RandomRefill(), new FileLogger());
+            // AtmService.Instance = new Atm(new OrderByDenominationValueDesc(), new MaxRefill(), new FileLogger());
+            // AtmService.Instance = new Atm(new orderByTotalValueDesc(), new MaxRefill(), new FileLogger());
+            // AtmService.Instance = new Atm(new orderByTotalValueDesc(), new RandomRefill(), new FileLogger());
             AtmService.Instance = new Atm(new orderByTotalValueDesc(), new EqualAmountsRefill(), new FileLogger());
             AtmService.Instance.refill();
         }

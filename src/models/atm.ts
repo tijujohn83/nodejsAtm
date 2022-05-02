@@ -36,7 +36,7 @@ export class Atm implements AtmRequirement {
         this._items = {};
         this._refillStrategy.Refill(this._items, this._atmMaxCapacities);
 
-        var logContent = "refilled with amount:" + this.getBalanceValue() + "; " +
+        var logContent = "refilled to amount:" + this.getBalanceValue() + "; " +
             JSON.stringify(Object.values(this._items)
                 .sort((a, b) => b.Denomination.value - a.Denomination.value)
                 .map(i => i.Denomination.id + "[" + i.BalanceItemCount + "]"));
