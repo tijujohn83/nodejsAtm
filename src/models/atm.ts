@@ -29,15 +29,12 @@ export class Atm implements AtmRequirement {
         this._atmMaxCapacities[c10.id] = 10000;
         this._atmMaxCapacities[c5.id] = 10000;
         this._atmMaxCapacities[c2.id] = 10000;
-        this._atmMaxCapacities[c1.id] = 10000;
-
-        this._refillStrategy.Refill(this._items, this._atmMaxCapacities);          
+        this._atmMaxCapacities[c1.id] = 10000;        
     }
 
     public refill(): void {
-        Object.values(this._items).forEach(val => {
-            val.BalanceItemCount = val.MaxCapacity;
-        });
+        this._items = {};
+        this._refillStrategy.Refill(this._items, this._atmMaxCapacities);
 
         var logContent = "refilled with amount:" + this.getBalanceValue() + "; " +
             JSON.stringify(Object.values(this._items)
