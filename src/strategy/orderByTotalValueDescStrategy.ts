@@ -2,7 +2,7 @@ import { ItemCapacity } from "../models/itemCapacity";
 import { WithdrawItems } from "../models/withdrawn";
 import { WithdrawStrategy } from "./withdrawStrategy";
 
-export class OrderByDenominationValueDescStrategy implements WithdrawStrategy {
+export class orderByTotalValueDescStrategy implements WithdrawStrategy {
 
     getOptimumCombination(amount: number, totalCapacity: ItemCapacity[]): WithdrawItems {
         var withDrawn: WithdrawItems = {};
@@ -10,7 +10,7 @@ export class OrderByDenominationValueDescStrategy implements WithdrawStrategy {
 
         var orderedItemsDesc = totalCapacity
             .filter(i => i.BalanceItemCount > 0)
-            .sort((a, b) => b.Denomination.value - a.Denomination.value);
+            .sort((a, b) => b.Denomination.value * b.BalanceItemCount - a.Denomination.value * a.BalanceItemCount);
 
         var iterator = 0;
         while (iterator <= orderedItemsDesc.length - 1 && remainingAmount > 0) {

@@ -13,9 +13,9 @@ export class Atm implements AtmRequirement {
     private _logger: ILogger; 
 
     constructor(strategy: WithdrawStrategy, logger: ILogger) {
-        this._items[n1000.id] = new ItemCapacity(n1000, 1000);
-        this._items[n500.id] = new ItemCapacity(n500, 1000);
-        this._items[n200.id] = new ItemCapacity(n200, 1000);
+        this._items[n1000.id] = new ItemCapacity(n1000, 10);
+        this._items[n500.id] = new ItemCapacity(n500, 9999999);
+        this._items[n200.id] = new ItemCapacity(n200, 10000);
         this._items[n100.id] = new ItemCapacity(n100, 1000);
         this._items[n50.id] = new ItemCapacity(n50, 1000);
         this._items[c20.id] = new ItemCapacity(c20, 1000);
@@ -68,7 +68,7 @@ export class Atm implements AtmRequirement {
                 return successObj;
             }
         }
-        var logContent = "amount:" + amount + "; balance:" + this.getBalanceValue() + "; Failed\n";
+        var logContent = "amount:" + amount + "; balance:" + this.getBalanceValue() + "; Failed";
         this._logger.logLine(logContent);
         return { status: WithdrawStatus.Failure };
     }
