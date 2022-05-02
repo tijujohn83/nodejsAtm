@@ -7,65 +7,46 @@ export class Normalized implements WithdrawStrategy {
     getOptimumCombination(amount: number, atmState: { [key: string]: ItemCapacity }): WithdrawItems {
         var withDrawn: WithdrawItems = {};
         var remainingAmount = amount;
+        var orderedItemsDesc = Object.values(atmState);
 
-        var orderedItemsDesc = Object.values(atmState)
-            .sort((a, b) => b.Denomination.value * b.BalanceItemCount - a.Denomination.value * a.BalanceItemCount);
+        while (this.getAtmBalance(atmState) > 0 && remainingAmount > 0 && orderedItemsDesc.length > 0) {
 
-        var lastItem = orderedItemsDesc[orderedItemsDesc.length - 1];
-        var floorAmount = lastItem.Denomination.value * lastItem.BalanceItemCount;
+            orderedItemsDesc = orderedItemsDesc
+                .filter(c => c.Denomination.value <= remainingAmount && c.BalanceItemCount > 0)
+                .sort((a, b) => b.Denomination.value * b.BalanceItemCount - a.Denomination.value * a.BalanceItemCount);
 
-        var iterator = 0;
-        while (iterator <= orderedItemsDesc.length - 2 && remainingAmount > 0) {
-            var current = orderedItemsDesc[iterator];
-            var required = Math.floor(remainingAmount / current.Denomination.value);
-            var floorCount = Math.ceil(floorAmount / current.Denomination.value);
+            var largest = orderedItemsDesc[0];
+            var secondLargest = orderedItemsDesc[orderedItemsDesc.length - 1];
+            var amountDiff = (largest.Denomination.value * largest.BalanceItemCount) - (secondLargest.Denomination.value * secondLargest.BalanceItemCount);
+            amountDiff = amountDiff == 0 ? 1 : amountDiff;
+
+            var suggested = Math.ceil(amountDiff / largest.Denomination.value);
+            var available = largest.BalanceItemCount < suggested ? largest.BalanceItemCount : suggested;
+            var required = Math.floor(remainingAmount / largest.Denomination.value);
+
             if (required > 0) {
-                var possible = 0;
-                if (current.BalanceItemCount - floorCount < required) {
-                    possible = current.BalanceItemCount - floorCount;
+                var actual = 0;
+                if (available < required) {
+                    actual = available;
                 }
                 else {
-                    possible = required;
+                    actual = required;
                 }
-                if (possible > 0) {
-                    withDrawn[current.Denomination.id] = possible;
-                    current.BalanceItemCount -= possible;
-                    remainingAmount -= possible * current.Denomination.value;
+                if (actual > 0) {
+                    withDrawn[largest.Denomination.id] = (withDrawn[largest.Denomination.id] === undefined) ? 0 : withDrawn[largest.Denomination.id]
+                    withDrawn[largest.Denomination.id] += actual;
+                    largest.BalanceItemCount -= actual;
+                    remainingAmount -= actual * largest.Denomination.value;
                 }
             }
-            iterator++;
         }
-
-        if (remainingAmount > 0) {
-
-            orderedItemsDesc = Object.values(atmState)
-                .sort((a, b) => b.Denomination.value - a.Denomination.value);
-
-            var iterator = 0;
-            while (iterator <= orderedItemsDesc.length - 1 && remainingAmount > 0) {
-                var current = orderedItemsDesc[iterator];
-                var required = Math.floor(remainingAmount / current.Denomination.value);
-                if (required > 0) {
-                    var possible = 0;
-                    if (current.BalanceItemCount < required) {
-                        possible = current.BalanceItemCount;
-                    }
-                    else {
-                        possible = required;
-                    }
-                    if (possible > 0) {
-                        withDrawn[current.Denomination.id] = possible;
-                        current.BalanceItemCount -= possible;
-                        remainingAmount -= possible * current.Denomination.value;
-                    }
-                }
-                iterator++;
-            }
-        }
-
-
         return withDrawn;
+    }
 
+    public getAtmBalance(atmState: { [key: string]: ItemCapacity }): number {
+        return Object.values(atmState)
+            .map(i => i.Denomination.value * i.BalanceItemCount)
+            .reduce((prev, curr) => prev + curr, 0);
     }
 
 }

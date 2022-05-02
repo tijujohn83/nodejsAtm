@@ -9,7 +9,7 @@ export class OrderByDenominationValueDesc implements WithdrawStrategy {
         var remainingAmount = amount;
 
         var orderedItemsDesc = Object.values(atmState)
-            .filter(i => i.BalanceItemCount > 0)
+            .filter(c => c.Denomination.value <= amount && c.BalanceItemCount > 0)
             .sort((a, b) => b.Denomination.value - a.Denomination.value);
 
         var iterator = 0;
