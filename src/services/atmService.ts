@@ -4,8 +4,9 @@ import { Atm } from "../models/atm";
 import { EqualAmountsRefill } from "../strategy/refill/equalAmountsRefill";
 import { MaxRefill } from "../strategy/refill/maxRefill";
 import { RandomRefill } from "../strategy/refill/randomRefill";
+import { Normalized } from "../strategy/withdraw/normalized";
 import { OrderByDenominationValueDesc } from "../strategy/withdraw/orderByDenominationValueDesc";
-import { orderByTotalValueDesc } from "../strategy/withdraw/orderByTotalValueDesc";
+import { OrderByTotalValueDesc } from "../strategy/withdraw/orderByTotalValueDesc";
 
 export class AtmService  {
     private static Instance: Atm;
@@ -13,9 +14,10 @@ export class AtmService  {
     constructor() {
         if (AtmService.Instance === undefined) {
             // AtmService.Instance = new Atm(new OrderByDenominationValueDesc(), new MaxRefill(), new FileLogger());
-            // AtmService.Instance = new Atm(new orderByTotalValueDesc(), new MaxRefill(), new FileLogger());
-            // AtmService.Instance = new Atm(new orderByTotalValueDesc(), new RandomRefill(), new FileLogger());
-            AtmService.Instance = new Atm(new orderByTotalValueDesc(), new EqualAmountsRefill(), new FileLogger());
+            // AtmService.Instance = new Atm(new OrderByTotalValueDesc(), new MaxRefill(), new FileLogger());
+            // AtmService.Instance = new Atm(new OrderByTotalValueDesc(), new RandomRefill(), new FileLogger());
+            // AtmService.Instance = new Atm(new OrderByTotalValueDesc(), new EqualAmountsRefill(), new FileLogger());
+            AtmService.Instance = new Atm(new Normalized(), new RandomRefill(), new FileLogger());
             AtmService.Instance.refill();
         }
     }

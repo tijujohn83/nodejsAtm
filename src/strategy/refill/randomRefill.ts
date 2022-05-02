@@ -3,9 +3,9 @@ import { ItemCapacity } from "../../models/itemCapacity";
 import { RefillStrategy } from "./refillStrategy";
 
 export class RandomRefill implements RefillStrategy {
-    Refill(items: { [key: string]: ItemCapacity; }, maxCapacities: { [key: string]: number }): void {
+    Refill(atmState: { [key: string]: ItemCapacity; }, maxCapacities: { [key: string]: number }): void {
         Object.keys(maxCapacities).forEach(c => {
-            items[c] = new ItemCapacity(currentDenominations[c], maxCapacities[c], this.getRandomIntInclusive(0, maxCapacities[c]));
+            atmState[c] = new ItemCapacity(currentDenominations[c], maxCapacities[c], this.getRandomIntInclusive(0, maxCapacities[c]));
         });
     }
 

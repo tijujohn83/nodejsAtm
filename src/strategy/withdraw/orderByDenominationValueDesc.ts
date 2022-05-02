@@ -4,11 +4,11 @@ import { WithdrawStrategy } from "./withdrawStrategy";
 
 export class OrderByDenominationValueDesc implements WithdrawStrategy {
 
-    getOptimumCombination(amount: number, totalCapacity: ItemCapacity[]): WithdrawItems {
+    getOptimumCombination(amount: number, atmState: { [key: string]: ItemCapacity }): WithdrawItems {
         var withDrawn: WithdrawItems = {};
         var remainingAmount = amount;
 
-        var orderedItemsDesc = totalCapacity
+        var orderedItemsDesc = Object.values(atmState)
             .filter(i => i.BalanceItemCount > 0)
             .sort((a, b) => b.Denomination.value - a.Denomination.value);
 
