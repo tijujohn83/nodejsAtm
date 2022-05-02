@@ -3,22 +3,22 @@ import { ILogger } from "../logger/logger";
 import { WithdrawStatus } from "./enums";
 import { ItemCapacity } from "./itemCapacity";
 import { WithdrawItems } from "./withdrawn";
-import { n1000, n500, n200, n100, n50, c20, c10, c5, c2, c1 } from "../models/denominations/currentDenominations";
+import { n1000, n500, n200, n100, n50, c20, c10, c5, c2, c1, currentDenominations } from "../models/denominations/currentDenominations";
 import { RefillStrategy } from "../strategy/refill/refillStrategy";
 import { WithdrawStrategy } from "../strategy/withdraw/withdrawStrategy";
 
 export class Atm implements AtmRequirement {
     private _items: { [key: string]: ItemCapacity } = {};
-    private _strategy: WithdrawStrategy;   
-    private _logger: ILogger; 
+    private _strategy: WithdrawStrategy;
+    private _logger: ILogger;
     private _refillStrategy: RefillStrategy;
-    private _atmMaxCapacities:{ [key: string]: number } = {};
-     
+    private _atmMaxCapacities: { [key: string]: number } = {};
+
 
     constructor(strategy: WithdrawStrategy, refillStrategy: RefillStrategy, logger: ILogger) {
         this._logger = logger;
-        this._strategy = strategy; 
-        this._refillStrategy = refillStrategy; 
+        this._strategy = strategy;
+        this._refillStrategy = refillStrategy;
 
         this._atmMaxCapacities[n1000.id] = 10000;
         this._atmMaxCapacities[n500.id] = 10000;
@@ -29,7 +29,7 @@ export class Atm implements AtmRequirement {
         this._atmMaxCapacities[c10.id] = 10000;
         this._atmMaxCapacities[c5.id] = 10000;
         this._atmMaxCapacities[c2.id] = 10000;
-        this._atmMaxCapacities[c1.id] = 10000;        
+        this._atmMaxCapacities[c1.id] = 10000;
     }
 
     public refill(): void {
@@ -58,22 +58,30 @@ export class Atm implements AtmRequirement {
             .reduce((prev, curr) => prev + curr, 0);
     }
 
-    public withDraw(amount: number): { status: WithdrawStatus, dispensed?: WithdrawItems } {
-        if (this.getBalanceValue() >= amount) {
-            var withdraw = this._strategy.getOptimumCombination(amount, Object.values(this._items));
-            if (Object.keys(withdraw).length > 0) {
-                Object.keys(withdraw).forEach(id => {
-                    this._items[id].BalanceItemCount -= withdraw[id];
+    public withDraw(requestedAmount: number): { status: WithdrawStatus, dispensed?: WithdrawItems } {
+        if (this.getBalanceValue() >= requestedAmount) {
+            var withdrawnItems = this._strategy.getOptimumCombination(requestedAmount, Object.values(this._items));
+            if (this.validateAmount(requestedAmount, withdrawnItems)) {
+                Object.keys(withdrawnItems).forEach(id => {
+                    this._items[id].BalanceItemCount -= withdrawnItems[id];
                 });
-                var successObj = { status: WithdrawStatus.Success, dispensed: withdraw };
-                var logContent = "amount:" + amount + "; balance:" + this.getBalanceValue() + "; " + JSON.stringify(successObj)
+                var successObj = { status: WithdrawStatus.Success, dispensed: withdrawnItems };
+                var logContent = "amount:" + requestedAmount + "; balance:" + this.getBalanceValue() + "; " + JSON.stringify(successObj)
                 this._logger.logLine(logContent);
                 return successObj;
             }
         }
-        var logContent = "amount:" + amount + "; balance:" + this.getBalanceValue() + "; Failed";
+        var logContent = "amount:" + requestedAmount + "; balance:" + this.getBalanceValue() + "; Failed";
         this._logger.logLine(logContent);
         return { status: WithdrawStatus.Failure };
     }
 
+    private validateAmount(requestedAmount: number, withdrawnItems: WithdrawItems): boolean {
+        var returnedAmount = Object.keys(withdrawnItems)
+            .map(k => currentDenominations[k].value * withdrawnItems[k])
+            .reduce((prev, curr) => prev + curr, 0);
+        return returnedAmount === requestedAmount;
+    }
 }
+
+
