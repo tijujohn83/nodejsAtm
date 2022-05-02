@@ -1,6 +1,6 @@
-import { n100, n50 } from "../../models/denominations/currentDenominations";
-import { ItemCapacity } from "../../models/itemCapacity";
-import { EqualAmountsRefill } from "../../strategy/refill/equalAmountsRefill";
+import { n100, n50 } from "../models/denominations/currentDenominations";
+import { ItemCapacity } from "../models/itemCapacity";
+import { EqualAmountsRefill } from "../strategy/refill/equalAmountsRefill";
 
 
 describe('equalAmountsRefillTest', () => {    

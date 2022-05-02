@@ -1,4 +1,4 @@
-import { currentDenominations } from "../../models/denominations/currentDenominations";
+import { currentDenominations } from "../models/denominations/currentDenominations";
 
 
 describe('denominations', () => {    
