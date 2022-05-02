@@ -18,7 +18,8 @@ describe('performanceTest', () => {
             atm.refill();
             var maxWithdraw = 100000;
             var withdrawCount = 0;
-            var repeat =1, i = 10000;
+            var repeat = 10000;
+            var i = repeat;
 
             while (i > 0) {
                 while (true) {
@@ -26,7 +27,8 @@ describe('performanceTest', () => {
                     if (atmBalance === 0) {
                         break;
                     }
-                    var withdraw = atm.withDraw(getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance));
+                    var amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
+                    var withdraw = atm.withDraw(amount);
                     if (withdraw.status == WithdrawStatus.Success) {
                         withdrawCount++;
                     }
@@ -34,7 +36,7 @@ describe('performanceTest', () => {
                 i--;
                 atm.refill();
             }
-            console.log('avg withdrawls for Normalized-MaxRefill=' + withdrawCount / repeat);
+            console.log('avg withdrawls for Normalized-MaxRefill=' + Math.floor(withdrawCount / repeat));
         }).not.toThrow();
     });
 
@@ -46,7 +48,8 @@ describe('performanceTest', () => {
             atm.refill();
             var maxWithdraw = 100000;
             var withdrawCount = 0;
-            var repeat =1, i = 10000;
+            var repeat = 10000;
+            var i = repeat;
 
             while (i > 0) {
                 while (true) {
@@ -54,7 +57,8 @@ describe('performanceTest', () => {
                     if (atmBalance === 0) {
                         break;
                     }
-                    var withdraw = atm.withDraw(getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance));
+                    var amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
+                    var withdraw = atm.withDraw(amount);
                     if (withdraw.status == WithdrawStatus.Success) {
                         withdrawCount++;
                     }
@@ -62,7 +66,7 @@ describe('performanceTest', () => {
                 i--;
                 atm.refill();
             }
-            console.log('avg withdrawls for OrderByDenominationValueDesc-MaxRefill=' + withdrawCount / repeat);
+            console.log('avg withdrawls for OrderByDenominationValueDesc-MaxRefill=' + Math.floor(withdrawCount / repeat));
         }).not.toThrow();
     });
 
@@ -74,7 +78,8 @@ describe('performanceTest', () => {
             atm.refill();
             var maxWithdraw = 100000;
             var withdrawCount = 0;
-            var repeat =1, i = 10000;
+            var repeat = 10000;
+            var i = repeat;
 
             while (i > 0) {
                 while (true) {
@@ -82,7 +87,8 @@ describe('performanceTest', () => {
                     if (atmBalance === 0) {
                         break;
                     }
-                    var withdraw = atm.withDraw(getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance));
+                    var amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
+                    var withdraw = atm.withDraw(amount);
                     if (withdraw.status == WithdrawStatus.Success) {
                         withdrawCount++;
                     }
@@ -90,7 +96,7 @@ describe('performanceTest', () => {
                 i--;
                 atm.refill();
             }
-            console.log('avg withdrawls for OrderByTotalValueDesc-MaxRefill=' + withdrawCount / repeat);
+            console.log('avg withdrawls for OrderByTotalValueDesc-MaxRefill=' + Math.floor(withdrawCount / repeat));
         }).not.toThrow();
     });
 
