@@ -6,8 +6,8 @@
 
 - `GET /atm/api/balanceAmount`
 - `GET /atm/api/balances`
-- `POST /atm/api/withdraw HTTP/1.1   
-    Content-Type: application/json
-    {
-    "amount":<number>
-    }`
+- `POST /atm/api/withdraw `  
+    Content-Type: application/json    
+    body: {
+    "amount":valueNumber
+    }
