@@ -1,11 +1,11 @@
 import { AtmRequirement } from "../atmRequirements";
 import { ILogger } from "../logger/logger";
-import { RefillStrategy } from "../strategy/refillStrategy";
-import { WithdrawStrategy } from "../strategy/withdrawStrategy";
 import { WithdrawStatus } from "./enums";
 import { ItemCapacity } from "./itemCapacity";
 import { WithdrawItems } from "./withdrawn";
 import { n1000, n500, n200, n100, n50, c20, c10, c5, c2, c1 } from "../models/denominations/currentDenominations";
+import { RefillStrategy } from "../strategy/refill/refillStrategy";
+import { WithdrawStrategy } from "../strategy/withdraw/withdrawStrategy";
 
 export class Atm implements AtmRequirement {
     private _items: { [key: string]: ItemCapacity } = {};

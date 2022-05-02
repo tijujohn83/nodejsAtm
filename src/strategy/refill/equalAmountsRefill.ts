@@ -1,5 +1,5 @@
-import { currentDenominations } from "../models/denominations/currentDenominations";
-import { ItemCapacity } from "../models/itemCapacity";
+import { currentDenominations } from "../../models/denominations/currentDenominations";
+import { ItemCapacity } from "../../models/itemCapacity";
 import { RefillStrategy } from "./refillStrategy";
 
 export class EqualAmountsRefill implements RefillStrategy {

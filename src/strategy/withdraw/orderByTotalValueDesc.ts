@@ -1,5 +1,5 @@
-import { ItemCapacity } from "../models/itemCapacity";
-import { WithdrawItems } from "../models/withdrawn";
+import { ItemCapacity } from "../../models/itemCapacity";
+import { WithdrawItems } from "../../models/withdrawn";
 import { WithdrawStrategy } from "./withdrawStrategy";
 
 export class orderByTotalValueDesc implements WithdrawStrategy {
