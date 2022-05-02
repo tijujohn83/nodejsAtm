@@ -7,13 +7,12 @@ export class Normalized implements WithdrawStrategy {
     getOptimumCombination(amount: number, atmState: { [key: string]: ItemCapacity }): WithdrawItems {
         var withDrawn: WithdrawItems = {};
         var remainingAmount = amount;
-        var orderedItemsDesc = Object.values(atmState);
+
+        var orderedItemsDesc = Object.values(atmState)
+            .filter(c => c.Denomination.value <= remainingAmount && c.BalanceItemCount > 0)
+            .sort((a, b) => b.Denomination.value * b.BalanceItemCount - a.Denomination.value * a.BalanceItemCount);;
 
         while (this.getAtmBalance(atmState) > 0 && remainingAmount > 0 && orderedItemsDesc.length > 0) {
-
-            orderedItemsDesc = orderedItemsDesc
-                .filter(c => c.Denomination.value <= remainingAmount && c.BalanceItemCount > 0)
-                .sort((a, b) => b.Denomination.value * b.BalanceItemCount - a.Denomination.value * a.BalanceItemCount);
 
             var largest = orderedItemsDesc[0];
             var secondLargest = orderedItemsDesc[orderedItemsDesc.length - 1];
@@ -39,6 +38,10 @@ export class Normalized implements WithdrawStrategy {
                     remainingAmount -= actual * largest.Denomination.value;
                 }
             }
+
+            orderedItemsDesc = orderedItemsDesc
+                .filter(c => c.Denomination.value <= remainingAmount && c.BalanceItemCount > 0)
+                .sort((a, b) => b.Denomination.value * b.BalanceItemCount - a.Denomination.value * a.BalanceItemCount);
         }
         return withDrawn;
     }
