@@ -29,16 +29,16 @@ export class Atm implements AtmRequirement {
         this._strategy = strategy;
         this._refillStrategy = refillStrategy;
 
-        this._atmMaxCapacities[n1000.id] = 1000;
-        this._atmMaxCapacities[n500.id] = 1000;
-        this._atmMaxCapacities[n200.id] = 1000;
-        this._atmMaxCapacities[n100.id] = 1000;
-        this._atmMaxCapacities[n50.id] = 1000;
-        this._atmMaxCapacities[c20.id] = 1000;
-        this._atmMaxCapacities[c10.id] = 1000;
-        this._atmMaxCapacities[c5.id] = 1000;
-        this._atmMaxCapacities[c2.id] = 1000;
-        this._atmMaxCapacities[c1.id] = 1000;
+        // this._atmMaxCapacities[n1000.id] = 1000;
+        // this._atmMaxCapacities[n500.id] = 1000;
+        // this._atmMaxCapacities[n200.id] = 1000;
+        this._atmMaxCapacities[n100.id] = 10;
+        this._atmMaxCapacities[n50.id] = 10;
+        this._atmMaxCapacities[c20.id] = 10;
+        this._atmMaxCapacities[c10.id] = 100;
+        this._atmMaxCapacities[c5.id] = 100;
+        this._atmMaxCapacities[c2.id] = 100;
+        this._atmMaxCapacities[c1.id] = 100;
     }
 
 

@@ -37,6 +37,10 @@ describe('atmTest', () => {
 
         if (withdraw.status == WithdrawStatus.Success) {
             expect(atm.getBalanceValue()).toBe(atmBalance - amount);
+            
+            expect(Object.entries(withdraw.dispensed)
+            .map(e => parseInt(e[0].substring(1)) * e[1]).reduce((prev, curr) => prev + curr, 0))
+            .toBe(amount);
         }
     });
 

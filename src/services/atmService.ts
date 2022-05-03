@@ -14,8 +14,8 @@ export class AtmService {
     constructor() {
         if (AtmService.Instance === undefined) {
             // no DI because of time constraints
-            var withdrawStratety = new Normalized(); //available: Normalized | OrderByDenominationValueDesc | OrderByTotalValueDesc
-            var refillStrategy = new RandomRefill(); //available: RandomRefill | MaxRefill | EqualAmountsRefill
+            var withdrawStratety = new OrderByDenominationValueDesc(); //available: Normalized | OrderByDenominationValueDesc | OrderByTotalValueDesc
+            var refillStrategy = new MaxRefill(); //available: RandomRefill | MaxRefill | EqualAmountsRefill
 
             AtmService.Instance = new Atm(withdrawStratety, refillStrategy, new FileLogger());
             AtmService.Instance.refill();
