@@ -13,5 +13,5 @@ POST http://localhost:3000/atm/api/withdraw HTTP/1.1
 content-type: application/json
 
 { 
-    "amount":500999999 
+    "amount":4983 
 }
