@@ -13,7 +13,7 @@ import { WithdrawStrategy } from '../strategy/withdraw/withdrawStrategy';
 function performanceTest(withdrawStratety: WithdrawStrategy, refillStrategy: RefillStrategy): void {
     const atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
     atm.refill();
-    const maxWithdraw = 10000;
+    const maxWithdraw = 3000;
     let withdrawCount = 0;
     const refillAndRepeat = 1000;
     let i = refillAndRepeat;
