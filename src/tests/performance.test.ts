@@ -13,9 +13,9 @@ import { WithdrawStrategy } from '../strategy/withdraw/withdrawStrategy';
 function performanceTest(withdrawStratety: WithdrawStrategy, refillStrategy: RefillStrategy): void {
     const atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
     atm.refill();
-    const maxWithdraw = 3000;
+    const maxWithdraw = 80000;
     let withdrawCount = 0;
-    const refillAndRepeat = 1000;
+    const refillAndRepeat = 2;
     let i = refillAndRepeat;
     const amountsWithdrawn: string[] = [];
 
@@ -40,7 +40,7 @@ function performanceTest(withdrawStratety: WithdrawStrategy, refillStrategy: Ref
     }
     console.log(`avg withdrawls for ${withdrawStratety.constructor.name}-${refillStrategy.constructor.name} = `
         + Math.floor(withdrawCount / refillAndRepeat)
-        // + '\n' + amountsWithdrawn.join(', ')
+         + '\n' + amountsWithdrawn.join(', ')
         );
 }
 
