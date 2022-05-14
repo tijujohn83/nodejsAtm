@@ -1,5 +1,5 @@
 import { AtmRequirement } from '../atmRequirements';
-import { FileLogger } from '../logger/fileLogger';
+import { FileLogger } from '../logger/FileLogger';
 import { Atm } from '../models/atm';
 import { EqualAmountsRefill } from '../strategy/refill/equalAmountsRefill';
 import { MaxRefill } from '../strategy/refill/maxRefill';
