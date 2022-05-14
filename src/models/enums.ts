@@ -1,6 +1,6 @@
 export enum DenominationType {
     Note = 'Note',
-    Coin = 'Coin'
+    Coin = 'Coin',
 }
 
 export enum WithdrawStatus {

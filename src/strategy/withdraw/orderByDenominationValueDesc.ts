@@ -1,27 +1,26 @@
-import { ItemCapacity } from "../../models/itemCapacity";
-import { WithdrawItems } from "../../models/withdrawn";
-import { WithdrawStrategy } from "./withdrawStrategy";
+import { ItemCapacity } from '../../models/itemCapacity';
+import { WithdrawItems } from '../../models/withdrawn';
+import { WithdrawStrategy } from './withdrawStrategy';
 
 export class OrderByDenominationValueDesc implements WithdrawStrategy {
 
-    getOptimumCombination(amount: number, atmState: { [key: string]: ItemCapacity }): WithdrawItems {
-        var withDrawn: WithdrawItems = {};
-        var remainingAmount = amount;
+    public getOptimumCombination(amount: number, atmState: { [key: string]: ItemCapacity }): WithdrawItems {
+        const withDrawn: WithdrawItems = {};
+        let remainingAmount = amount;
 
-        var orderedItemsDesc = Object.values(atmState)
+        const orderedItemsDesc = Object.values(atmState)
             .filter(c => c.Denomination.value <= amount && c.BalanceItemCount > 0)
             .sort((a, b) => b.Denomination.value - a.Denomination.value);
 
-        var iterator = 0;
+        let iterator = 0;
         while (iterator <= orderedItemsDesc.length - 1 && remainingAmount > 0) {
-            var current = orderedItemsDesc[iterator];
-            var required = Math.floor(remainingAmount / current.Denomination.value);
+            const current = orderedItemsDesc[iterator];
+            const required = Math.floor(remainingAmount / current.Denomination.value);
             if (required > 0) {
-                var possible = 0;
+                let possible = 0;
                 if (current.BalanceItemCount < required) {
                     possible = current.BalanceItemCount;
-                }
-                else {
+                } else {
                     possible = required;
                 }
                 if (possible > 0) {

@@ -1,3 +1,3 @@
 export const configOptions  = {
-    port:3000
-}
+    port: 3000,
+};

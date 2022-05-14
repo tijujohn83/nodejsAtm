@@ -1,4 +1,4 @@
-import { IDenomination } from "./denominations/denomination";
+import { IDenomination } from './denominations/denomination';
 
 export class ItemCapacity {
     private _denomination: IDenomination;
@@ -23,8 +23,8 @@ export class ItemCapacity {
         this._denomination = denomination;
         this._maxCapacity = maxCapacity;
 
-        if(fill > maxCapacity) {
-            throw Error("cannot refill more than capcity");
+        if (fill > maxCapacity) {
+            throw Error('cannot refill more than capcity');
         }
         this._balanceItemCount = fill;
     }

@@ -1,7 +1,6 @@
-import { CurrencyCoin } from "./currencyCoin";
-import { CurrencyNote } from "./currencyNote";
-import { Denomination } from "./denomination";
-
+import { CurrencyCoin } from './currencyCoin';
+import { CurrencyNote } from './currencyNote';
+import { Denomination } from './denomination';
 
 export const n1000 = new CurrencyNote(1000, 'n1000');
 export const n500 = new CurrencyNote(500, 'n500');
@@ -14,7 +13,7 @@ export const c5 = new CurrencyCoin(5, 50, 'c5');
 export const c2 = new CurrencyCoin(2, 50, 'c2');
 export const c1 = new CurrencyCoin(1, 10, 'c1');
 
-var all:{[key: string]: Denomination} = {};
+const all: {[key: string]: Denomination} = {};
 all[n1000.id] = n1000;
 all[n500.id] = n500;
 all[n200.id] = n200;

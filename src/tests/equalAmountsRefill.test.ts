@@ -1,13 +1,12 @@
-import { n100, n50 } from "../models/denominations/currentDenominations";
-import { ItemCapacity } from "../models/itemCapacity";
-import { EqualAmountsRefill } from "../strategy/refill/equalAmountsRefill";
+import { n100, n50 } from '../models/denominations/currentDenominations';
+import { ItemCapacity } from '../models/itemCapacity';
+import { EqualAmountsRefill } from '../strategy/refill/equalAmountsRefill';
 
-
-describe('equalAmountsRefillTest', () => {    
-    test('create new instance', ()=> {
-        var refill = new EqualAmountsRefill();
-        var atmState: { [key: string]: ItemCapacity; } = {};
-        var capacities: { [key: string]: number } = {};
+describe('equalAmountsRefillTest', () => {
+    test('create new instance', () => {
+        const refill = new EqualAmountsRefill();
+        const atmState: { [key: string]: ItemCapacity; } = {};
+        const capacities: { [key: string]: number } = {};
         capacities[n100.id] = 10;
         capacities[n50.id] = 10;
 

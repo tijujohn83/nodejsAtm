@@ -1,3 +1,3 @@
 export class RequestBody {
-    amount:number;
+    public amount: number;
 }

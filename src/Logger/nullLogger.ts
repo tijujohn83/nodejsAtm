@@ -1,11 +1,8 @@
-import { ILogger } from "./logger";
+import { ILogger } from './logger';
 
 export class NullLogger implements ILogger {
 
-    constructor() {
-    }
-
-    logLine(str: string): void {
-        
+    public logLine(str: string): void {
+    // do nothing
     }
 }

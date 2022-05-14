@@ -1,9 +1,9 @@
-import { DenominationType } from "../enums";
+import { DenominationType } from '../enums';
 
 export interface IDenomination {
     get value(): number;
-    get type(): DenominationType
-    get id(): string
+    get type(): DenominationType;
+    get id(): string;
 }
 
 export abstract class Denomination implements IDenomination {

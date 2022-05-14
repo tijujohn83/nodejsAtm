@@ -1,35 +1,34 @@
-import { NullLogger } from "../logger/nullLogger";
-import { Atm } from "../models/atm";
-import { WithdrawStatus } from "../models/enums";
-import { getRandomIntInclusive } from "../services/utils";
-import { MaxRefill } from "../strategy/refill/maxRefill";
-import { Normalized } from "../strategy/withdraw/normalized";
-import { OrderByDenominationValueDesc } from "../strategy/withdraw/orderByDenominationValueDesc";
-import { OrderByTotalValueDesc } from "../strategy/withdraw/orderByTotalValueDesc";
-
+import { NullLogger } from '../logger/nullLogger';
+import { Atm } from '../models/atm';
+import { WithdrawStatus } from '../models/enums';
+import { getRandomIntInclusive } from '../services/utils';
+import { MaxRefill } from '../strategy/refill/maxRefill';
+import { Normalized } from '../strategy/withdraw/normalized';
+import { OrderByDenominationValueDesc } from '../strategy/withdraw/orderByDenominationValueDesc';
+import { OrderByTotalValueDesc } from '../strategy/withdraw/orderByTotalValueDesc';
 
 describe('performanceTest', () => {
 
     it('avg iterations test Normalized-MaxRefill', () => {
         expect(() => {
-            var withdrawStratety = new Normalized();
-            var refillStrategy = new MaxRefill();
-            var atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
+            const withdrawStratety = new Normalized();
+            const refillStrategy = new MaxRefill();
+            const atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
             atm.refill();
-            var maxWithdraw = 100000;
-            var withdrawCount = 0;
-            var repeat = 10000;
-            var i = repeat;
+            const maxWithdraw = 100000;
+            let withdrawCount = 0;
+            const repeat = 10000;
+            let i = repeat;
 
             while (i > 0) {
                 while (true) {
-                    var atmBalance = atm.getBalanceValue();
+                    const atmBalance = atm.getBalanceValue();
                     if (atmBalance === 0) {
                         break;
                     }
-                    var amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
-                    var withdraw = atm.withDraw(amount);
-                    if (withdraw.status == WithdrawStatus.Success) {
+                    const amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
+                    const withdraw = atm.withDraw(amount);
+                    if (withdraw.status === WithdrawStatus.Success) {
                         withdrawCount++;
                     }
                 }
@@ -42,24 +41,24 @@ describe('performanceTest', () => {
 
     it('avg iterations test OrderByDenominationValueDesc-MaxRefill', () => {
         expect(() => {
-            var withdrawStratety = new OrderByDenominationValueDesc();
-            var refillStrategy = new MaxRefill();
-            var atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
+            const withdrawStratety = new OrderByDenominationValueDesc();
+            const refillStrategy = new MaxRefill();
+            const atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
             atm.refill();
-            var maxWithdraw = 100000;
-            var withdrawCount = 0;
-            var repeat = 10000;
-            var i = repeat;
+            const maxWithdraw = 100000;
+            let withdrawCount = 0;
+            const repeat = 10000;
+            let i = repeat;
 
             while (i > 0) {
                 while (true) {
-                    var atmBalance = atm.getBalanceValue();
+                    const atmBalance = atm.getBalanceValue();
                     if (atmBalance === 0) {
                         break;
                     }
-                    var amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
-                    var withdraw = atm.withDraw(amount);
-                    if (withdraw.status == WithdrawStatus.Success) {
+                    const amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
+                    const withdraw = atm.withDraw(amount);
+                    if (withdraw.status === WithdrawStatus.Success) {
                         withdrawCount++;
                     }
                 }
@@ -72,24 +71,24 @@ describe('performanceTest', () => {
 
     it('avg iterations test OrderByTotalValueDesc-MaxRefill', () => {
         expect(() => {
-            var withdrawStratety = new OrderByTotalValueDesc();
-            var refillStrategy = new MaxRefill();
-            var atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
+            const withdrawStratety = new OrderByTotalValueDesc();
+            const refillStrategy = new MaxRefill();
+            const atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
             atm.refill();
-            var maxWithdraw = 100000;
-            var withdrawCount = 0;
-            var repeat = 10000;
-            var i = repeat;
+            const maxWithdraw = 100000;
+            let withdrawCount = 0;
+            const repeat = 10000;
+            let i = repeat;
 
             while (i > 0) {
                 while (true) {
-                    var atmBalance = atm.getBalanceValue();
+                    const atmBalance = atm.getBalanceValue();
                     if (atmBalance === 0) {
                         break;
                     }
-                    var amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
-                    var withdraw = atm.withDraw(amount);
-                    if (withdraw.status == WithdrawStatus.Success) {
+                    const amount = getRandomIntInclusive(0, atmBalance > maxWithdraw ? maxWithdraw : atmBalance);
+                    const withdraw = atm.withDraw(amount);
+                    if (withdraw.status === WithdrawStatus.Success) {
                         withdrawCount++;
                     }
                 }
