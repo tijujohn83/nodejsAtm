@@ -32,11 +32,11 @@ export class Atm implements AtmRequirement {
         this._atmMaxCapacities[n200.id] = 100;
         this._atmMaxCapacities[n100.id] = 100;
         this._atmMaxCapacities[n50.id] = 100;
-        this._atmMaxCapacities[c20.id] = 100;
-        this._atmMaxCapacities[c10.id] = 100;
-        this._atmMaxCapacities[c5.id] = 100;
-        this._atmMaxCapacities[c2.id] = 100;
-        this._atmMaxCapacities[c1.id] = 100;
+        this._atmMaxCapacities[c20.id] = 10000;
+        this._atmMaxCapacities[c10.id] = 10000;
+        this._atmMaxCapacities[c5.id] = 10000;
+        this._atmMaxCapacities[c2.id] = 10000;
+        this._atmMaxCapacities[c1.id] = 10000;
     }
 
     public refill(): void {
