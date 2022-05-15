@@ -10,15 +10,15 @@ import { OrderByDenominationValueDesc } from '../strategy/withdraw/orderByDenomi
 import { OrderByTotalValueDesc } from '../strategy/withdraw/orderByTotalValueDesc';
 import { WithdrawStrategy } from '../strategy/withdraw/withdrawStrategy';
 
-function performanceTest(withdrawStratety: WithdrawStrategy, refillStrategy: RefillStrategy): void {
+function refillTest(withdrawStratety: WithdrawStrategy, refillStrategy: RefillStrategy): void {
     const atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
     atm.refill();
     const maxWithdraw = 80000;
-    let withdrawCount = 0;
     const refillAndRepeat = 2;
-    let i = refillAndRepeat;
     const amountsWithdrawn: string[] = [];
 
+    let withdrawCount = 0;
+    let i = refillAndRepeat;
     while (i > 0) {
         while (true) {
             const atmBalance = atm.getBalanceValue();
@@ -38,29 +38,29 @@ function performanceTest(withdrawStratety: WithdrawStrategy, refillStrategy: Ref
         i--;
         atm.refill();
     }
-    console.log(`avg withdrawls for ${withdrawStratety.constructor.name}-${refillStrategy.constructor.name} = `
+    console.log(`avg withdrawls for refillTestFullEmpty ${withdrawStratety.constructor.name}-${refillStrategy.constructor.name} = `
         + Math.floor(withdrawCount / refillAndRepeat)
          + '\n' + amountsWithdrawn.join(', ')
         );
 }
 
-describe('performanceTest', () => {
+describe('refillTestFullEmpty', () => {
 
     it('avg iterations test Normalized-MaxRefill', () => {
         expect(() => {
-            performanceTest(new Normalized(), new MaxRefill());
+            refillTest(new Normalized(), new MaxRefill());
         }).not.toThrow();
     });
 
     it('avg iterations test OrderByDenominationValueDesc-MaxRefill', () => {
         expect(() => {
-            performanceTest(new OrderByDenominationValueDesc(), new MaxRefill());
+            refillTest(new OrderByDenominationValueDesc(), new MaxRefill());
         }).not.toThrow();
     });
 
     it('avg iterations test OrderByTotalValueDesc-MaxRefill', () => {
         expect(() => {
-            performanceTest(new OrderByTotalValueDesc(), new MaxRefill());
+            refillTest(new OrderByTotalValueDesc(), new MaxRefill());
         }).not.toThrow();
     });
 
