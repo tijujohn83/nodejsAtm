@@ -1,4 +1,3 @@
-import { AtmInterface } from '../models/atm/atmInterface';
 import { FileLogger } from '../logger/fileLogger';
 import { Atm } from '../models/atm/atm';
 import { EqualAmountsRefill } from '../strategy/refill/equalAmountsRefill';
@@ -9,9 +8,12 @@ import { OrderByDenominationValueDesc } from '../strategy/withdraw/orderByDenomi
 import { OrderByTotalValueDesc } from '../strategy/withdraw/orderByTotalValueDesc';
 import { WithdrawItems } from '../models/atm/withdrawItems';
 import { WithdrawStatus } from '../models/enums';
+import { AtmManagerInterface } from './atmManagerInterface';
+import * as fs from 'fs';
 
-export class AtmManager implements AtmInterface {
+export class AtmManager implements AtmManagerInterface {
     private static Instance: Atm;
+    private _atmManagerFile = 'atmManagerFile.log';
 
     constructor() {
         if (AtmManager.Instance === undefined) {
@@ -19,8 +21,8 @@ export class AtmManager implements AtmInterface {
             const withdrawStratety = new OrderByDenominationValueDesc(); // available: Normalized | OrderByDenominationValueDesc | OrderByTotalValueDesc
             const refillStrategy = new MaxRefill(); // available: RandomRefill | MaxRefill | EqualAmountsRefill
 
-            AtmManager.Instance = new Atm(withdrawStratety, refillStrategy, new FileLogger());
-            AtmManager.Instance.refill();
+            AtmManager.Instance = new Atm(withdrawStratety, refillStrategy, new FileLogger(), this.getWorkingAtmId());
+            this.setWorkingAtmId(AtmManager.Instance.id);
         }
     }
 
@@ -38,6 +40,25 @@ export class AtmManager implements AtmInterface {
 
     public withDraw(requestedAmount: number): { status: WithdrawStatus; dispensed?: WithdrawItems; } {
         return AtmManager.Instance.withDraw(requestedAmount);
+    }
+
+    private getWorkingAtmId(): string {
+        if (!fs.existsSync(this._atmManagerFile)) {
+            fs.openSync(this._atmManagerFile, 'w');
+        }
+
+        let atmId = fs.readFileSync(this._atmManagerFile, 'utf8');
+        atmId = atmId === undefined ? '' : atmId;
+        return atmId.trim();
+    }
+
+    private setWorkingAtmId(id: string): void {
+        if (this.getWorkingAtmId() !== id) {
+            if (!fs.existsSync(this._atmManagerFile)) {
+                fs.openSync(this._atmManagerFile, 'w');
+            }
+            fs.appendFileSync(this._atmManagerFile, id);
+        }
     }
 
 }

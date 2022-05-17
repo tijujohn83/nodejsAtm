@@ -1,13 +1,18 @@
 import { AtmInterface } from './atmInterface';
-import { ILogger } from '../../logger/logger';
+import { AtmLogger } from '../../logger/logger';
 import { WithdrawStatus } from '../enums';
 import { DenominationCapacity } from '../denominations/denominationCapacity';
 import { WithdrawItems } from './withdrawItems';
 import { n1000, n500, n200, n100, n50, c20, c10, c5, c2, c1, currentDenominations } from '../denominations/currentDenominations';
 import { RefillStrategy } from '../../strategy/refill/refillStrategy';
 import { WithdrawStrategy } from '../../strategy/withdraw/withdrawStrategy';
+import { getNewAtmId } from '../../services/utils';
 
 export class Atm implements AtmInterface {
+    private _id: string;
+    public get id(): string {
+        return this._id;
+    }
     private _atmState: { [key: string]: DenominationCapacity; } = {};
     public get atmState(): { [key: string]: DenominationCapacity; } {
         // return copy
@@ -18,12 +23,18 @@ export class Atm implements AtmInterface {
     }
 
     private _strategy: WithdrawStrategy;
-    private _logger: ILogger;
+    private _logger: AtmLogger;
     private _refillStrategy: RefillStrategy;
     private _atmMaxCapacities: { [key: string]: number } = {};
 
-    constructor(strategy: WithdrawStrategy, refillStrategy: RefillStrategy, logger: ILogger) {
+    constructor(strategy: WithdrawStrategy, refillStrategy: RefillStrategy, logger: AtmLogger, id?: string) {
+        if (id !== undefined && id.trim() !== '') {
+            this._id = id;
+        } else {
+            this._id = getNewAtmId();
+        }
         this._logger = logger;
+        this._logger.setAtmId(this._id);
         this._strategy = strategy;
         this._refillStrategy = refillStrategy;
 
