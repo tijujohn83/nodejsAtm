@@ -10,6 +10,7 @@ import { WithdrawItems } from '../models/atm/withdrawItems';
 import { WithdrawStatus } from '../models/enums';
 import { AtmManagerInterface } from './atmManagerInterface';
 import * as fs from 'fs';
+import { FileStorageProvider } from '../state/fileStorageProvider';
 
 export class AtmManager implements AtmManagerInterface {
     private static Instance: Atm;
@@ -21,7 +22,12 @@ export class AtmManager implements AtmManagerInterface {
             const withdrawStratety = new OrderByDenominationValueDesc(); // available: Normalized | OrderByDenominationValueDesc | OrderByTotalValueDesc
             const refillStrategy = new MaxRefill(); // available: RandomRefill | MaxRefill | EqualAmountsRefill
 
-            AtmManager.Instance = new Atm(withdrawStratety, refillStrategy, new FileLogger(), this.getWorkingAtmId());
+            AtmManager.Instance = new Atm(withdrawStratety,
+                refillStrategy,
+                new FileLogger(),
+                this.getWorkingAtmId(),
+                new FileStorageProvider());
+
             this.setWorkingAtmId(AtmManager.Instance.id);
         }
     }

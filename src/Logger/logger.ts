@@ -3,12 +3,11 @@ export interface ILogger {
 }
 
 export abstract class AtmLogger implements ILogger {
+
     protected _atmId: string;
     public setAtmId(atmId: string): void {
         this._atmId = atmId;
     }
 
-    public logLine(str: string): void {
-        // do nothing
-    }
+    public abstract logLine(str: string): void ;
 }

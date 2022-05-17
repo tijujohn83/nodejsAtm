@@ -8,6 +8,8 @@ import { RefillStrategy } from '../../strategy/refill/refillStrategy';
 import { WithdrawStrategy } from '../../strategy/withdraw/withdrawStrategy';
 import { getNewAtmId } from '../../services/utils';
 import * as fs from 'fs';
+import { StorageStateProvier } from '../../state/storageStateProvider';
+import { InMemmoryProvider } from '../../state/inMemoryProvider';
 
 export class Atm implements AtmInterface {
     private _id: string;
@@ -26,10 +28,11 @@ export class Atm implements AtmInterface {
 
     private _strategy: WithdrawStrategy;
     private _logger: AtmLogger;
+    private _storageStateProvider: StorageStateProvier;
     private _refillStrategy: RefillStrategy;
     private _atmMaxCapacities: { [key: string]: number } = {};
 
-    constructor(strategy: WithdrawStrategy, refillStrategy: RefillStrategy, logger: AtmLogger, id?: string) {
+    constructor(strategy: WithdrawStrategy, refillStrategy: RefillStrategy, logger: AtmLogger, id?: string, storageStateProvider?: StorageStateProvier) {
         if (id !== undefined && id.trim() !== '') {
             this._id = id;
         } else {
@@ -41,6 +44,9 @@ export class Atm implements AtmInterface {
 
         this._strategy = strategy;
         this._refillStrategy = refillStrategy;
+
+        this._storageStateProvider = storageStateProvider === undefined ? new InMemmoryProvider() : storageStateProvider;
+        this._storageStateProvider.setAtmId(this._id);
 
         this.init();
         this.loadSavedAtmState();
@@ -113,20 +119,10 @@ export class Atm implements AtmInterface {
         Object.keys(this._atmMaxCapacities).forEach(c => {
             this._atmState[c] = new DenominationCapacity(currentDenominations[c], this._atmMaxCapacities[c], 0);
         });
-
-        this.saveAtmState();
     }
 
     private loadSavedAtmState(): void {
-        if (!fs.existsSync(this._id)) {
-            fs.openSync(this._id, 'w');
-        } let atmState = fs.readFileSync(this._id, 'utf8');
-        if (atmState === undefined) {
-            return;
-        }
-
-        atmState = JSON.parse(atmState);
-
+        const atmState = this._storageStateProvider.getState();
         Object.keys(atmState).forEach(denomination => {
             this._atmState[denomination].BalanceItemCount = atmState[denomination]._balanceItemCount;
         });
@@ -134,9 +130,6 @@ export class Atm implements AtmInterface {
     }
 
     private saveAtmState(): void {
-        if (!fs.existsSync(this._id)) {
-            fs.openSync(this._id, 'w');
-        }
-        fs.writeFileSync(this._id, JSON.stringify(this.atmState));
+        this._storageStateProvider.saveState(this.atmState);
     }
 }
