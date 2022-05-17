@@ -1,7 +1,7 @@
 import { IStorageStateProvier, StorageStateProvier } from './storageStateProvider';
 
 export class InMemmoryProvider extends StorageStateProvier implements IStorageStateProvier {
-    private stateObj: object;
+    private stateObj: object = {};
 
     public saveState(o: object): void {
         this.stateObj = o;
