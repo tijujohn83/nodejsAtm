@@ -14,7 +14,7 @@ function refillTest(withdrawStratety: WithdrawStrategy, refillStrategy: RefillSt
     const atm = new Atm(withdrawStratety, refillStrategy, new NullLogger());
     atm.refill();
     const maxWithdraw = 80000;
-    const refillAndRepeat = 2;
+    const refillAndRepeat = 1000;
     const amountsWithdrawn: string[] = [];
 
     let withdrawCount = 0;
@@ -40,7 +40,7 @@ function refillTest(withdrawStratety: WithdrawStrategy, refillStrategy: RefillSt
     }
     console.log(`avg withdrawls for refillTestFullEmpty ${withdrawStratety.constructor.name}-${refillStrategy.constructor.name} = `
         + Math.floor(withdrawCount / refillAndRepeat)
-         + '\n' + amountsWithdrawn.join(', ')
+        // + '\n' + amountsWithdrawn.join(', ')
         );
 }
 
