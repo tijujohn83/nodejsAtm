@@ -17,5 +17,5 @@ content-type: application/json
 }
 
 ###
-//get atm coin balances
+//refill the atm
 POST http://localhost:3000/atm/api/refill HTTP/1.1
