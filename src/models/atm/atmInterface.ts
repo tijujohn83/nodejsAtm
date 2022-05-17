@@ -1,7 +1,7 @@
-import { WithdrawStatus } from './models/enums';
-import { WithdrawItems } from './models/withdrawn';
+import { WithdrawStatus } from '../enums';
+import { WithdrawItems } from './withdrawItems';
 
-export interface AtmRequirement {
+export interface AtmInterface {
     refill(): void;
     getBalances(): WithdrawItems;
     getBalanceValue(): number;

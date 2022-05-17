@@ -1,5 +1,5 @@
-import { ItemCapacity } from '../../models/itemCapacity';
+import { DenominationCapacity } from '../../models/denominations/denominationCapacity';
 
 export interface RefillStrategy {
-    Refill(atmState: { [key: string]: ItemCapacity }, maxCapacities: { [key: string]: number }): void;
+    Refill(atmState: { [key: string]: DenominationCapacity }, maxCapacities: { [key: string]: number }): void;
 }

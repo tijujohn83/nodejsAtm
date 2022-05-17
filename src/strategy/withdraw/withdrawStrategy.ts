@@ -1,6 +1,6 @@
-import { ItemCapacity } from '../../models/itemCapacity';
-import { WithdrawItems } from '../../models/withdrawn';
+import { DenominationCapacity } from '../../models/denominations/denominationCapacity';
+import { WithdrawItems } from '../../models/atm/withdrawItems';
 
 export interface WithdrawStrategy {
-    getOptimumCombination(amount: number, atmState: { [key: string]: ItemCapacity }): WithdrawItems;
+    getOptimumCombination(amount: number, atmState: { [key: string]: DenominationCapacity }): WithdrawItems;
 }

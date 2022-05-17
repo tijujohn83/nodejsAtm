@@ -1,10 +1,10 @@
-import { ItemCapacity } from '../../models/itemCapacity';
-import { WithdrawItems } from '../../models/withdrawn';
+import { DenominationCapacity } from '../../models/denominations/denominationCapacity';
+import { WithdrawItems } from '../../models/atm/withdrawItems';
 import { WithdrawStrategy } from './withdrawStrategy';
 
 export class Normalized implements WithdrawStrategy {
 
-    public getOptimumCombination(amount: number, atmState: { [key: string]: ItemCapacity }): WithdrawItems {
+    public getOptimumCombination(amount: number, atmState: { [key: string]: DenominationCapacity }): WithdrawItems {
         const withDrawn: WithdrawItems = {};
         let remainingAmount = amount;
 
@@ -45,7 +45,7 @@ export class Normalized implements WithdrawStrategy {
         return withDrawn;
     }
 
-    public getAtmBalance(atmState: { [key: string]: ItemCapacity }): number {
+    public getAtmBalance(atmState: { [key: string]: DenominationCapacity }): number {
         return Object.values(atmState)
             .map(i => i.Denomination.value * i.BalanceItemCount)
             .reduce((prev, curr) => prev + curr, 0);

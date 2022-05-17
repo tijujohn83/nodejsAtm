@@ -1,10 +1,10 @@
-import { ItemCapacity } from '../../models/itemCapacity';
-import { WithdrawItems } from '../../models/withdrawn';
+import { DenominationCapacity } from '../../models/denominations/denominationCapacity';
+import { WithdrawItems } from '../../models/atm/withdrawItems';
 import { WithdrawStrategy } from './withdrawStrategy';
 
 export class OrderByTotalValueDesc implements WithdrawStrategy {
 
-    public getOptimumCombination(amount: number, atmState: { [key: string]: ItemCapacity }): WithdrawItems {
+    public getOptimumCombination(amount: number, atmState: { [key: string]: DenominationCapacity }): WithdrawItems {
         const withDrawn: WithdrawItems = {};
         let remainingAmount = amount;
 

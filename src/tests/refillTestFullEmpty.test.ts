@@ -1,5 +1,5 @@
 import { NullLogger } from '../logger/nullLogger';
-import { Atm } from '../models/atm';
+import { Atm } from '../models/atm/atm';
 import { WithdrawStatus } from '../models/enums';
 import { getRandomIntInclusive } from '../services/utils';
 import { EqualAmountsRefill } from '../strategy/refill/equalAmountsRefill';

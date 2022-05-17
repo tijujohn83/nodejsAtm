@@ -1,5 +1,5 @@
 import { NullLogger } from '../logger/nullLogger';
-import { Atm } from '../models/atm';
+import { Atm } from '../models/atm/atm';
 import { WithdrawStatus } from '../models/enums';
 import { getRandomIntInclusive } from '../services/utils';
 import { EqualAmountsRefill } from '../strategy/refill/equalAmountsRefill';
@@ -38,7 +38,7 @@ describe('atmTest', () => {
             expect(atm.getBalanceValue()).toBe(atmBalance - amount);
 
             expect(Object.entries(withdraw.dispensed)
-            .map(e => parseInt(e[0].substring(1)) * e[1]).reduce((prev, curr) => prev + curr, 0))
+            .map(e => parseInt(e[0].substring(1), 10) * e[1]).reduce((prev, curr) => prev + curr, 0))
             .toBe(amount);
         }
     });

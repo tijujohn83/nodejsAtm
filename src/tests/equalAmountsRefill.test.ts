@@ -1,11 +1,11 @@
 import { n100, n50 } from '../models/denominations/currentDenominations';
-import { ItemCapacity } from '../models/itemCapacity';
+import { DenominationCapacity } from '../models/denominations/denominationCapacity';
 import { EqualAmountsRefill } from '../strategy/refill/equalAmountsRefill';
 
 describe('equalAmountsRefillTest', () => {
     test('create new instance', () => {
         const refill = new EqualAmountsRefill();
-        const atmState: { [key: string]: ItemCapacity; } = {};
+        const atmState: { [key: string]: DenominationCapacity; } = {};
         const capacities: { [key: string]: number } = {};
         capacities[n100.id] = 10;
         capacities[n50.id] = 10;

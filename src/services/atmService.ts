@@ -1,6 +1,6 @@
-import { AtmRequirement } from '../atmRequirements';
-import { FileLogger } from '../logger/FileLogger';
-import { Atm } from '../models/atm';
+import { AtmInterface } from '../models/atm/atmInterface';
+import { FileLogger } from '../logger/fileLogger';
+import { Atm } from '../models/atm/atm';
 import { EqualAmountsRefill } from '../strategy/refill/equalAmountsRefill';
 import { MaxRefill } from '../strategy/refill/maxRefill';
 import { RandomRefill } from '../strategy/refill/randomRefill';
@@ -22,7 +22,7 @@ export class AtmService {
         }
     }
 
-    public getInstance(): AtmRequirement {
+    public getInstance(): AtmInterface {
         return AtmService.Instance;
     }
 

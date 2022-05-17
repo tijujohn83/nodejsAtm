@@ -1,19 +1,19 @@
-import { AtmRequirement } from '../atmRequirements';
-import { ILogger } from '../logger/logger';
-import { WithdrawStatus } from './enums';
-import { ItemCapacity } from './itemCapacity';
-import { WithdrawItems } from './withdrawn';
-import { n1000, n500, n200, n100, n50, c20, c10, c5, c2, c1, currentDenominations } from '../models/denominations/currentDenominations';
-import { RefillStrategy } from '../strategy/refill/refillStrategy';
-import { WithdrawStrategy } from '../strategy/withdraw/withdrawStrategy';
+import { AtmInterface } from './atmInterface';
+import { ILogger } from '../../logger/logger';
+import { WithdrawStatus } from '../enums';
+import { DenominationCapacity } from '../denominations/denominationCapacity';
+import { WithdrawItems } from './withdrawItems';
+import { n1000, n500, n200, n100, n50, c20, c10, c5, c2, c1, currentDenominations } from '../denominations/currentDenominations';
+import { RefillStrategy } from '../../strategy/refill/refillStrategy';
+import { WithdrawStrategy } from '../../strategy/withdraw/withdrawStrategy';
 
-export class Atm implements AtmRequirement {
-    private _atmState: { [key: string]: ItemCapacity; } = {};
-    public get atmState(): { [key: string]: ItemCapacity; } {
+export class Atm implements AtmInterface {
+    private _atmState: { [key: string]: DenominationCapacity; } = {};
+    public get atmState(): { [key: string]: DenominationCapacity; } {
         // return copy
-        const returnObj: { [key: string]: ItemCapacity; } = {};
+        const returnObj: { [key: string]: DenominationCapacity; } = {};
         Object.entries(this._atmState)
-            .forEach(e => returnObj[e[0]] = new ItemCapacity(e[1].Denomination, e[1].MaxCapacity, e[1].BalanceItemCount));
+            .forEach(e => returnObj[e[0]] = new DenominationCapacity(e[1].Denomination, e[1].MaxCapacity, e[1].BalanceItemCount));
         return returnObj;
     }
 

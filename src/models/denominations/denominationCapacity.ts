@@ -1,6 +1,6 @@
-import { IDenomination } from './denominations/denomination';
+import { IDenomination } from './denomination';
 
-export class ItemCapacity {
+export class DenominationCapacity {
     private _denomination: IDenomination;
     public get Denomination(): IDenomination {
         return this._denomination;
