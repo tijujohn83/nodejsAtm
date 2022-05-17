@@ -1,5 +1,6 @@
-import { DenominationCapacity } from '../../models/denominations/denominationCapacity';
+
 import { WithdrawItems } from '../../models/atm/withdrawItems';
+import { DenominationCapacity } from '../../models/denominations/denominationCapacity';
 import { WithdrawStrategy } from './withdrawStrategy';
 
 export class Normalized implements WithdrawStrategy {

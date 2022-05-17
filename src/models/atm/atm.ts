@@ -7,12 +7,14 @@ import { n1000, n500, n200, n100, n50, c20, c10, c5, c2, c1, currentDenomination
 import { RefillStrategy } from '../../strategy/refill/refillStrategy';
 import { WithdrawStrategy } from '../../strategy/withdraw/withdrawStrategy';
 import { getNewAtmId } from '../../services/utils';
+import * as fs from 'fs';
 
 export class Atm implements AtmInterface {
     private _id: string;
     public get id(): string {
         return this._id;
     }
+
     private _atmState: { [key: string]: DenominationCapacity; } = {};
     public get atmState(): { [key: string]: DenominationCapacity; } {
         // return copy
@@ -33,26 +35,21 @@ export class Atm implements AtmInterface {
         } else {
             this._id = getNewAtmId();
         }
+
         this._logger = logger;
         this._logger.setAtmId(this._id);
+
         this._strategy = strategy;
         this._refillStrategy = refillStrategy;
 
-        this._atmMaxCapacities[n1000.id] = 10;
-        this._atmMaxCapacities[n500.id] = 10;
-        this._atmMaxCapacities[n200.id] = 10;
-        this._atmMaxCapacities[n100.id] = 100;
-        this._atmMaxCapacities[n50.id] = 100;
-        this._atmMaxCapacities[c20.id] = 10000;
-        this._atmMaxCapacities[c10.id] = 10000;
-        this._atmMaxCapacities[c5.id] = 10000;
-        this._atmMaxCapacities[c2.id] = 10000;
-        this._atmMaxCapacities[c1.id] = 10000;
+        this.init();
+        this.loadSavedAtmState();
     }
 
     public refill(): void {
         this._atmState = {};
         this._refillStrategy.Refill(this._atmState, this._atmMaxCapacities);
+        this.saveAtmState();
 
         const logContent = 'refilled to amount:' + this.getBalanceValue() + '; ' +
             JSON.stringify(Object.values(this._atmState)
@@ -85,6 +82,7 @@ export class Atm implements AtmInterface {
                 });
                 const successObj = { status: WithdrawStatus.Success, dispensed: withdrawnItems };
                 this._logger.logLine('amount:' + requestedAmount + '; balance:' + this.getBalanceValue() + '; ' + JSON.stringify(successObj));
+                this.saveAtmState();
                 return successObj;
             }
         }
@@ -98,5 +96,47 @@ export class Atm implements AtmInterface {
             .map(k => currentDenominations[k].value * withdrawnItems[k])
             .reduce((prev, curr) => prev + curr, 0);
         return returnedAmount === requestedAmount;
+    }
+
+    private init(): void {
+        this._atmMaxCapacities[n1000.id] = 10;
+        this._atmMaxCapacities[n500.id] = 10;
+        this._atmMaxCapacities[n200.id] = 10;
+        this._atmMaxCapacities[n100.id] = 100;
+        this._atmMaxCapacities[n50.id] = 100;
+        this._atmMaxCapacities[c20.id] = 10000;
+        this._atmMaxCapacities[c10.id] = 10000;
+        this._atmMaxCapacities[c5.id] = 10000;
+        this._atmMaxCapacities[c2.id] = 10000;
+        this._atmMaxCapacities[c1.id] = 10000;
+
+        Object.keys(this._atmMaxCapacities).forEach(c => {
+            this._atmState[c] = new DenominationCapacity(currentDenominations[c], this._atmMaxCapacities[c], 0);
+        });
+
+        this.saveAtmState();
+    }
+
+    private loadSavedAtmState(): void {
+        if (!fs.existsSync(this._id)) {
+            fs.openSync(this._id, 'w');
+        } let atmState = fs.readFileSync(this._id, 'utf8');
+        if (atmState === undefined) {
+            return;
+        }
+
+        atmState = JSON.parse(atmState);
+
+        Object.keys(atmState).forEach(denomination => {
+            this._atmState[denomination].BalanceItemCount = atmState[denomination]._balanceItemCount;
+        });
+
+    }
+
+    private saveAtmState(): void {
+        if (!fs.existsSync(this._id)) {
+            fs.openSync(this._id, 'w');
+        }
+        fs.writeFileSync(this._id, JSON.stringify(this.atmState));
     }
 }
