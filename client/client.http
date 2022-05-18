@@ -3,18 +3,19 @@ GET http://localhost:3000/atm/api/balanceamount
 
 
 ###
-//get atm coin balances
+//get atm denomination balances
 GET http://localhost:3000/atm/api/balances
 
 
 ###
-//get atm coin balances
+//withdraw amount from atm
 POST http://localhost:3000/atm/api/withdraw HTTP/1.1
 content-type: application/json
 
 { 
     "amount":1000 
 }
+
 
 ###
 //refill the atm
