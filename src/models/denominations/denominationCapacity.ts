@@ -15,6 +15,7 @@ export class DenominationCapacity {
     public get BalanceItemCount(): number {
         return this._balanceItemCount;
     }
+
     public set BalanceItemCount(value: number) {
         this._balanceItemCount = value;
     }
